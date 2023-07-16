@@ -20,6 +20,7 @@ from skimage.segmentation import watershed
 data_folder = Path("Data")
 files = ["cover slip 35 image 3.czi",
         "coverslip 33 image 1.czi"]
+
 num_channels = 2
 
 def load_file(file, channel):
