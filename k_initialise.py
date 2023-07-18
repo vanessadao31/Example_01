@@ -104,7 +104,7 @@ for file in files:
 
     features = {
         'cluster': labels/labels.max()}
-    points_layer = viewer.add_points(points, features=features, size=5, face_color='cluster', face_colormap='prism')
+    points_layer = viewer.add_points(reflected_points, features=features, size=5, face_color='cluster', face_colormap='prism')
     
     figure, ax = plt.subplots(1, 1, figsize=(8, 8))
     ax.invert_yaxis()
