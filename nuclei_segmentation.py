@@ -18,6 +18,7 @@ data_folder = Path("Data")
 files = ["cover slip 35 image 3.czi",
         "coverslip 33 image 1.czi"]
 num_channels = 2
+
 def load_file(file, channel):
     filename = data_folder / file
     image = czifile.imread(filename)
@@ -41,8 +42,11 @@ def my_voronoi_otsu_labeling(image:"napari.types.ImageData", spot_sigma: float =
     # start from remaining spots and flood binary image with labels
     labeled_spots, number = measure.label(remaining_spots, return_num=True)
     labels = watershed(binary_otsu, labeled_spots, mask=binary_otsu)
+    
+    properties = measure.regionprops_table(labels, properties=('label', 'centroid'))
+    centroids = np.stack((properties['centroid-1'], properties['centroid-0']), axis=-1)
 
-    return labels, number  
+    return labels, number, centroids  
 
 nuclei = load_file(files[1], 0)
 protein = load_file(files[1], 1)
@@ -54,7 +58,7 @@ CH2 = viewer.add_image(protein, name='CH2')
 # using napari segment blobs and things with membranes
 sigma_spot_detection = 18 # lower number, more segmentation
 sigma_outline = 10 # higher number, more gaussian blur applied
-segmented_nuclei, number_nuclei = my_voronoi_otsu_labeling(nuclei, 
+segmented_nuclei, number_nuclei, centroids = my_voronoi_otsu_labeling(nuclei, 
                                                  spot_sigma=sigma_spot_detection,
                                                  outline_sigma=sigma_outline
                                                  )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Trying to cludter points o parents nuclei using k-means but providng the centre of the centroids
+Trying to cluster points to parents nuclei using k-means but providng the centre of the centroids
 """
 
 from pathlib import Path
@@ -19,8 +19,6 @@ import pyclesperanto_prototype as cle
 
 from sklearn.cluster import KMeans
 from skimage.segmentation import watershed
-
-from sklearn_extra.cluster import KMedoids
 
 data_folder = Path("Data")
 files = ["cover slip 35 image 3.czi",
@@ -74,6 +72,7 @@ def make_points(image, threshold):
         maximum_value_range=1)
     
     points = np.argwhere(final_spots)
+    
     return points
 
 for file in files:
@@ -93,24 +92,29 @@ for file in files:
            
     nuclei_labels = viewer.add_labels(segmented_nuclei)
     
-    points = make_points(protein, 'li')
+    reflected_points = make_points(protein, 'li')
     
     reflect = [[0, 1], 
                [1, 0]]
     
-    reflected_points = np.matmul(points, reflect)
+    points = np.matmul(reflected_points, reflect)
     
     kmeans = KMeans(n_clusters=number_nuclei, init=centroids, max_iter=1).fit(points)
     labels = kmeans.labels_
-    
-    points_layer = viewer.add_points(points, size=4, face_color='lime')
+
+    features = {
+        'cluster': labels/labels.max()}
+    points_layer = viewer.add_points(points, features=features, size=5, face_color='cluster', face_colormap='prism')
     
     figure, ax = plt.subplots(1, 1, figsize=(8, 8))
     ax.invert_yaxis()
     
-    plt.scatter(x=reflected_points[:, 0], 
-                y=reflected_points[:, 1],
+    plt.scatter(x=points[:, 0], 
+                y=points[:, 1],
                 c=labels,
-                s=0.2)
+                s=0.2,
+                cmap='prism')
     plt.scatter(x=centroids[:, 0], y=centroids[:, 1], s=5, color='w')
     ax.imshow(protein, cmap='gray')
+    
+    
