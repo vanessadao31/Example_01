@@ -57,7 +57,7 @@ for file in files:
     # using napari segment blobs and things with membranes
     segmented_protein= two_channel_segmentor(nuclei, protein, 
                                                      spot_sigma=22,
-                                                     outline_sigma=8)
+                                                     outline_sigma=7)
     
     segmented_nuclei, number_nuclei, centroids = my_voronoi_otsu_labeling(nuclei, 
                                                          spot_sigma=18,
@@ -72,6 +72,8 @@ for file in files:
     pos_nuclei = cle.exclude_labels_with_map_values_out_of_range(
         count_map, segmented_nuclei, minimum_value_range=1)
     cle.imshow(pos_nuclei, labels=True)
+    
+    pos_nuclei_labels = viewer.add_labels(pos_nuclei, name='positive_nuclei')
     
     # print out results
     print('\nFile name:', file)
