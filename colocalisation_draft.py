@@ -41,7 +41,8 @@ for file in files:
                                                          outline_sigma=sigma_outline)
     nuclei_labels = viewer.add_labels(segmented_nuclei)
         
-    reflect = [[0, 1], [1, 0]]
+    reflect = [[0, 1], 
+               [1, 0]]
     points = np.matmul(reflected_points, reflect)
             
     kmeans = KMeans(n_clusters=number_nuclei, init=centroids, max_iter=1).fit(points)
@@ -54,8 +55,6 @@ for file in files:
         
     for i in range(len(protein_labels)):
         test[points[i, 0], points[i, 1]] = protein_labels[i]
-        
-    #test = test.astype(np.int32)
         
     maximum_distance = 50 # pixels
         

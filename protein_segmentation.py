@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import napari
 
+from skimage.morphology import local_maxima
 from skimage import data, measure, exposure, filters
 from skimage.segmentation import watershed
 
@@ -72,11 +73,17 @@ for file in files:
     pos_nuclei = cle.exclude_labels_with_map_values_out_of_range(
         count_map, segmented_nuclei, minimum_value_range=1)
     cle.imshow(pos_nuclei, labels=True)
-    
-    pos_nuclei_labels = viewer.add_labels(pos_nuclei, name='positive_nuclei')
-    
+        
     # print out results
     print('\nFile name:', file)
     print('Number of nuclei: ', segmented_nuclei.max() + 1)
     print('Number of protein blobs: ', segmented_protein.max() + 1)
     print('Number of "cells with protein expression": ', pos_nuclei.max() +1)
+    
+    # visualisation
+    outlines = cle.detect_label_edges(pos_nuclei)
+    img_with_outlines = cle.maximum_images(nuclei, outlines*nuclei.max())
+    cle.imshow(img_with_outlines)
+    
+    pos_nuclei_labels = viewer.add_labels(pos_nuclei, name='positive_nuvlei')
+    pos_nuclei_labels.contour = 5
