@@ -40,7 +40,7 @@ for file in files:
                                                          spot_sigma=sigma_spot_detection,
                                                          outline_sigma=sigma_outline)
     nuclei_labels = viewer.add_labels(segmented_nuclei)
-        
+    reflected_points = make_points(protein, 'li')
     reflect = [[0, 1], 
                [1, 0]]
     points = np.matmul(reflected_points, reflect)

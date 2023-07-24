@@ -46,22 +46,23 @@ def my_voronoi_otsu_labeling(image:"napari.types.ImageData", spot_sigma: float =
     properties = measure.regionprops_table(labels, properties=('label', 'centroid'))
     centroids = np.stack((properties['centroid-1'], properties['centroid-0']), axis=-1)
 
-    return labels, number, centroids  
+    return labels, number, centroids
+  
+from file in files:
+    nuclei = load_file(file, 0)
+    protein = load_file(file, 1)
+    
+    viewer = napari.Viewer()
+    CH1 = viewer.add_image(nuclei, name='CH1')
+    CH2 = viewer.add_image(protein, name='CH2')
+    
+    # using napari segment blobs and things with membranes
+    sigma_spot_detection = 18 # lower number, more segmentation
+    sigma_outline = 10 # higher number, more gaussian blur applied
+    segmented_nuclei, number_nuclei, centroids = my_voronoi_otsu_labeling(nuclei, 
+                                                     spot_sigma=sigma_spot_detection,
+                                                     outline_sigma=sigma_outline
+                                                     )
+    nuclei_labels = viewer.add_labels(segmented_nuclei)
+    print(number_nuclei)
 
-nuclei = load_file(files[1], 0)
-protein = load_file(files[1], 1)
-
-viewer = napari.Viewer()
-CH1 = viewer.add_image(nuclei, name='CH1')
-CH2 = viewer.add_image(protein, name='CH2')
-
-# using napari segment blobs and things with membranes
-sigma_spot_detection = 18 # lower number, more segmentation
-sigma_outline = 10 # higher number, more gaussian blur applied
-segmented_nuclei, number_nuclei, centroids = my_voronoi_otsu_labeling(nuclei, 
-                                                 spot_sigma=sigma_spot_detection,
-                                                 outline_sigma=sigma_outline
-                                                 )
-nuclei_labels = viewer.add_labels(segmented_nuclei)
-
-print(number_nuclei)
