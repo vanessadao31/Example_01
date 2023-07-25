@@ -15,7 +15,7 @@ from skimage.segmentation import watershed
 import napari_segment_blobs_and_things_with_membranes as nsbatwm
 import pyclesperanto_prototype as cle
 
-from k_initialise import load_file, my_voronoi_otsu_labeling
+from nuclei_segmentation import load_file, my_voronoi_otsu_labeling
 
 data_folder = Path("Data")
 files = ["cover slip 35 image 3.czi",
