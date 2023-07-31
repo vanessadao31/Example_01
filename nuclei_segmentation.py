@@ -48,7 +48,7 @@ def my_voronoi_otsu_labeling(image:"napari.types.ImageData", spot_sigma: float =
 
     return labels, number, centroids
   
-from file in files:
+for file in files:
     nuclei = load_file(file, 0)
     protein = load_file(file, 1)
     

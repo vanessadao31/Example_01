@@ -7,6 +7,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import napari
+import csv
 
 from skimage.morphology import local_maxima
 from skimage import data, measure, exposure, filters
@@ -14,17 +15,16 @@ from skimage.segmentation import watershed
 
 import napari_segment_blobs_and_things_with_membranes as nsbatwm
 import pyclesperanto_prototype as cle
+from napari_skimage_regionprops import regionprops_table, add_table, get_table
 
 from nuclei_segmentation import load_file, my_voronoi_otsu_labeling
 
 data_folder = Path("Data")
 files = ["cover slip 35 image 3.czi",
         "coverslip 33 image 1.czi"]
-
-num_channels = 2
-
-nuclei = load_file(files[1], 0)
-protein = load_file(files[1], 1)
+columns = ["File", "Number nuclei", "Number blobs", "Number cells with protein"]
+num_channels = range(len(files))
+total_rows = []
 
 def two_channel_segmentor(nuclei, protein, spot_sigma: float = 2, outline_sigma: float = 2) -> "napari.types.LabelsData":
     image = np.asarray(nuclei)
@@ -73,17 +73,30 @@ for file in files:
     pos_nuclei = cle.exclude_labels_with_map_values_out_of_range(
         count_map, segmented_nuclei, minimum_value_range=1)
     cle.imshow(pos_nuclei, labels=True)
-        
-    # print out results
-    print('\nFile name:', file)
-    print('Number of nuclei: ', segmented_nuclei.max() + 1)
-    print('Number of protein blobs: ', segmented_protein.max() + 1)
-    print('Number of "cells with protein expression": ', pos_nuclei.max() +1)
     
+    row = [file, segmented_nuclei.max() + 1, segmented_protein.max() + 1, pos_nuclei.max() + 1]
+    total_rows = np.append(total_rows, row, axis=0)
+        
     # visualisation
     outlines = cle.detect_label_edges(pos_nuclei)
     img_with_outlines = cle.maximum_images(nuclei, outlines*nuclei.max())
     cle.imshow(img_with_outlines)
     
-    pos_nuclei_labels = viewer.add_labels(pos_nuclei, name='positive_nuvlei')
+    pos_nuclei_labels = viewer.add_labels(pos_nuclei, name='positive_nuclei')
     pos_nuclei_labels.contour = 5
+    
+    # region properties
+    regionprops_table(
+        viewer.layers[0].data,
+        viewer.layers[2].data,
+        intensity=True,
+        napari_viewer=viewer,
+        )
+    
+total_rows = np.reshape(total_rows, (-1, len(columns)))    
+
+# saving results
+with open("summary_file.csv", mode='w') as summary_file:
+    summary_writer = csv.writer(summary_file, delimiter=',')
+    summary_writer.writerow(columns)        
+    summary_writer.writerows(total_rows)
