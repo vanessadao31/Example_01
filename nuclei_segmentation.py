@@ -3,54 +3,17 @@
 First attempt: Trying voronoi-otsu labelling
 """
 from pathlib import Path
-import matplotlib.pyplot as plt
-import numpy as np
 import napari
-import czifile
+from napari_skimage_regionprops import regionprops_table
 
-from skimage.morphology import local_maxima, local_minima
-import napari_segment_blobs_and_things_with_membranes as nsbatwm
-from skimage import data, measure, filters
-from skimage.segmentation import watershed
-import pyclesperanto_prototype as cle
+from functions import load_file, my_voronoi_otsu_labeling
 
-data_folder = Path("Data")
-files = ["cover slip 35 image 3.czi",
-        "coverslip 33 image 1.czi"]
+data_folder = Path.cwd() / Path("Data")
 num_channels = 2
 
-def load_file(file, channel):
-    filename = data_folder / file
-    image = czifile.imread(filename)
-    return image[0, 0, channel, 0, 0, :, :, 0]
-
-def my_voronoi_otsu_labeling(image:"napari.types.ImageData", spot_sigma: float = 2, outline_sigma: float = 2) -> "napari.types.LabelsData":
-    image = np.asarray(image)
-
-    # blur and detect local maxima
-    blurred_spots = filters.gaussian(image, spot_sigma)
-    spot_centroids = local_maxima(blurred_spots)
-
-    # blur and threshold
-    blurred_outline = filters.gaussian(image, outline_sigma)
-    threshold = filters.threshold_otsu(blurred_outline)
-    binary_otsu = blurred_outline > threshold
-
-    # determine local maxima within the thresholded area
-    remaining_spots = spot_centroids * binary_otsu
-
-    # start from remaining spots and flood binary image with labels
-    labeled_spots, number = measure.label(remaining_spots, return_num=True)
-    labels = watershed(binary_otsu, labeled_spots, mask=binary_otsu)
-    
-    properties = measure.regionprops_table(labels, properties=('label', 'centroid'))
-    centroids = np.stack((properties['centroid-1'], properties['centroid-0']), axis=-1)
-
-    return labels, number, centroids
-  
-for file in files:
-    nuclei = load_file(file, 0)
-    protein = load_file(file, 1)
+for file_path in data_folder.glob("*.czi"):
+    nuclei = load_file(data_folder, file_path, 0)
+    protein = load_file(data_folder, file_path, 1)
     
     viewer = napari.Viewer()
     CH1 = viewer.add_image(nuclei, name='CH1')
@@ -64,5 +27,14 @@ for file in files:
                                                      outline_sigma=sigma_outline
                                                      )
     nuclei_labels = viewer.add_labels(segmented_nuclei)
-    print(number_nuclei)
+    
+    # region properties
+    regionprops_table(
+        viewer.layers[0].data,
+        viewer.layers[2].data,
+        intensity=True,
+        napari_viewer=viewer,
+        )
+    napari.run()
+    
 
