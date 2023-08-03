@@ -3,6 +3,7 @@
 First attempt: Trying voronoi-otsu labelling
 """
 from pathlib import Path
+import numpy as np
 import napari
 from napari_skimage_regionprops import regionprops_table
 
@@ -15,6 +16,9 @@ for file_path in data_folder.glob("*.czi"):
 
     specific_folder = data_folder / Path(f"{file_path.stem}")
     specific_folder.mkdir(exist_ok=True)
+    
+    pores = load_file(data_folder, file_path, 0)
+    nuclei = load_file(data_folder, file_path, 1)
     
     # using napari segment blobs and things with membranes
     sigma_spot_detection = 18 # lower number, more segmentation
