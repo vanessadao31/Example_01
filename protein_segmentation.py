@@ -52,7 +52,6 @@ for file_path in data_folder.glob("*.czi"):
         new_path = specific_folder / csv_path.name
         csv_path.replace(new_path)
     
-        
     # Writing summary file
     
     row = [file_path.stem, segmented_nuclei.max() + 1, segmented_protein.max() + 1, pos_nuclei.max() + 1]
@@ -65,4 +64,6 @@ with open("summary_file.csv", mode='w') as summary_file:
     summary_writer = csv.writer(summary_file, delimiter=',')
     summary_writer.writerow(columns)        
     summary_writer.writerows(total_rows)
+
+
 
