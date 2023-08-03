@@ -39,7 +39,7 @@ Requires a nuclei marker such as DAPI. Similar to nuclei segmentation but uses a
 Outputs a summary .csv fie with number of nuclei detected, number of protein blobs detected and number of nuclei associated with a protein blob.
 A labels layer will be produced identifying which, and how many, nuclei are within a protein blob.
 ## Using napari-skimage-regionprops
-napari will open with a table measuring the properties of the `segmented_nuclei` layer using [regionprops](https://github.com/haesleinhuepf/napari-skimage-regionprops/tree/master). To interact with the labels and see which index corresponds to which region, activate `pick mode` and tick `show selected`.
+Running the `example_1_viewer.py` will open napari with a table measuring the properties of the `segmented_nuclei` layer using [regionprops](https://github.com/haesleinhuepf/napari-skimage-regionprops/tree/master). To interact with the labels and see which index corresponds to which region, activate `pick mode` and tick `show selected`.
 
 ## Using Your Own Data
 As of right now, only works with two channcel .czi data with the nuclei in channel 1 and the protein in channel 2. Save the data in the `Data` folder then run the desired script.
