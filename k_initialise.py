@@ -19,7 +19,6 @@ from skimage.segmentation import watershed
 from nuclei_segmentation import load_file, my_voronoi_otsu_labeling
 
 data_folder = Path.cwd() / Path("Data")
-
 num_channels = 2
 
 def make_points(image, threshold):
@@ -43,8 +42,8 @@ def make_points(image, threshold):
     return points
 
 for file_path in data_folder.glob("*.czi"):
-    nuclei = load_file(file_path, 0)
-    protein = load_file(file_path, 1)
+    nuclei = load_file(data_folder, file_path, 0)
+    protein = load_file(data_folder, file_path, 1)
     
     viewer = napari.Viewer()
     CH1 = viewer.add_image(nuclei, name='CH1')
@@ -72,6 +71,7 @@ for file_path in data_folder.glob("*.czi"):
     features = {
         'cluster': labels/labels.max()}
     points_layer = viewer.add_points(reflected_points, features=features, size=5, face_color='cluster', face_colormap='prism')
+    napari.run()
     
     # Visualisation
     
