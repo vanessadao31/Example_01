@@ -34,6 +34,7 @@ Clustering the points according to nearest neighbour with nuclei centroids as th
 
 ## Protein Segmentation
 Requires a nuclei marker such as DAPI. Similar to nuclei segmentation but uses a binary mask from the protein channel to perform watershed from nuclei centroids.
+
 <img src="https://github.com/vanessadao31/Example_01/assets/138872234/0c94776e-e045-4802-8a14-eabb41b3ac67" width="600">
 
 Outputs a summary .csv fie with number of nuclei detected, number of protein blobs detected and number of nuclei associated with a protein blob.
