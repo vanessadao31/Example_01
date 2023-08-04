@@ -44,7 +44,14 @@ A labels layer will be produced identifying which, and how many, nuclei are with
 
 
 ## Using napari-skimage-regionprops
-Running the `example_1_viewer.py` will open napari with a table measuring the properties of the `segmented_nuclei` layer using [regionprops](https://github.com/haesleinhuepf/napari-skimage-regionprops/tree/master). To interact with the labels and see which index corresponds to which region, activate `pick mode` and tick `show selected`.
+Running the `example_1_viewer.py` will open napari with a table measuring the properties of the `segmented_nuclei` layer using [regionprops](https://github.com/haesleinhuepf/napari-skimage-regionprops/tree/master). To interact with the labels and see which index corresponds to which region, 
+1. activate `pick mode`
+2. tick `show selected`
+3. select any row/label on the table
+
+To visualise features from the table across all objects, double click a column header and change the colormap. Here, the area of the nuclei were visualised:
+
+<img src="./images/area.png" width="500">
 
 ## Using Your Own Data
 As of right now, only works with two channcel .czi data with the nuclei in channel 1 and the protein in channel 2. Save the data in the `Data` folder then run the desired script.
