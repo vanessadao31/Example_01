@@ -4,7 +4,7 @@ A set of scripts which use the napari plugin [napari-segment-blobs-and-things-wi
 ## Pre-requisites
 - Create a new conda/mamba environment and install [devbio-napari](https://github.com/haesleinhuepf/devbio-napari#installation) using mamba (already on OnDemand).
 ```
-- mamba create --name devbio-napari-env python=3.9 devbio-napari -c conda-forge -c pytorch
+mamba create --name devbio-napari-env python=3.9 devbio-napari -c conda-forge -c pytorch
 ```
 
 - Afterwards, activate the environment.
