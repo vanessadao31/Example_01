@@ -14,8 +14,8 @@ conda activate devbio-napari-env
 
 Then navigate to the repo and run the desired scripts from the command line which should, hopefully, work.
 ## Data
-<img src="https://github.com/vanessadao31/Example_01/assets/138872234/c7727328-80eb-4bc5-81d7-6ece3fb0d208" width="300">
-<img src="https://github.com/vanessadao31/Example_01/assets/138872234/13b0ee2e-04a3-49a9-93b7-665be4a05984" width="300">
+<img src="https://github.com/vanessadao31/Example_01/images/img1_data.png" width="300">
+<img src="https://github.com/vanessadao31/Example_01/images/img2_data.png" width="300">
 
 Two channel datasets visualised in napari with enhanced contrast. 
 
