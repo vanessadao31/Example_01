@@ -27,7 +27,7 @@ for file_path in data_folder.glob("*.czi"):
     protein = load_file(data_folder, file_path, 1)
     
     # using napari segment blobs and things with membranes
-    segmented_protein= two_channel_segmentor(nuclei, protein, 
+    segmented_protein = two_channel_segmentor(nuclei, protein, 
                                                      spot_sigma=22,
                                                      outline_sigma=7)
     
