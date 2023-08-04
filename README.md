@@ -2,12 +2,12 @@
  
 A set of scripts which use the napari plugin [napari-segment-blobs-and-things-with-membranes](https://github.com/haesleinhuepf/napari-segment-blobs-and-things-with-membranes) to segment nuclei and cells and then visualises the results in the napari viewer.
 ## Pre-requisites
-Create a new conda/mamba environment and install [devbio-napari](https://github.com/haesleinhuepf/devbio-napari#installation) using mamba (already on OnDemand).
+- Create a new conda/mamba environment and install [devbio-napari](https://github.com/haesleinhuepf/devbio-napari#installation) using mamba (already on OnDemand).
 ```
-mamba create --name devbio-napari-env python=3.9 devbio-napari -c conda-forge -c pytorch
+- mamba create --name devbio-napari-env python=3.9 devbio-napari -c conda-forge -c pytorch
 ```
 
-Afterwards, activate the environment.
+- Afterwards, activate the environment.
 ```
 conda activate devbio-napari-env
 ```
@@ -38,7 +38,13 @@ Requires a nuclei marker such as DAPI. Similar to nuclei segmentation but uses a
 <img src="https://github.com/vanessadao31/Example_01/assets/138872234/0c94776e-e045-4802-8a14-eabb41b3ac67" width="600">
 
 Outputs a summary .csv fie with number of nuclei detected, number of protein blobs detected and number of nuclei associated with a protein blob.
-A labels layer will be produced identifying which, and how many, nuclei are within a protein blob.
+A labels layer will be produced identifying which, and how many, nuclei are within a protein blob with an outline around those nuclei.
+
+<img src="https://github.com/vanessadao31/Example_01/assets/138872234/73b74dc0-416d-4774-a3ef-d0a146fdf439" width="300">
+<img src="https://github.com/vanessadao31/Example_01/assets/138872234/30d7bd2f-1141-4c77-ad1d-2c519e50107d" width="300">
+
+
+
 ## Using napari-skimage-regionprops
 Running the `example_1_viewer.py` will open napari with a table measuring the properties of the `segmented_nuclei` layer using [regionprops](https://github.com/haesleinhuepf/napari-skimage-regionprops/tree/master). To interact with the labels and see which index corresponds to which region, activate `pick mode` and tick `show selected`.
 
