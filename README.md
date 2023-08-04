@@ -39,6 +39,7 @@ Requires a nuclei marker such as DAPI. Similar to nuclei segmentation but uses a
 
 Outputs a summary .csv fie with number of nuclei detected, number of protein blobs detected and number of nuclei associated with a protein blob.
 A labels layer will be produced identifying which, and how many, nuclei are within a protein blob with an outline around those nuclei.
+
 <img src="https://github.com/vanessadao31/Example_01/assets/138872234/73b74dc0-416d-4774-a3ef-d0a146fdf439" width="300">
 <img src="https://github.com/vanessadao31/Example_01/assets/138872234/30d7bd2f-1141-4c77-ad1d-2c519e50107d" width="300">
 
